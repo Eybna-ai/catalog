@@ -44,7 +44,7 @@ function colorKey(key){
 
 // ---- state
 const st={mode:'vape',sel:'us:06',hover:null,filter:null,k:1,rot:[100,-30,0],tab:'rules',prod:'',lgroup:'all',lq:'',pq:'',idle:0};
-try{const m=localStorage.getItem('ecg-mode');if(['vape','preroll','fnb','cosm'].includes(m))st.mode=m;}catch(e){}
+
 
 const SPR={};function sprite(col){const m=col.match(/\d+(\.\d+)?/g).slice(0,3).map(v=>Math.round(v/16)*16).join(',');col=m;if(SPR[col])return SPR[col];const c=document.createElement('canvas');c.width=c.height=32;const x=c.getContext('2d');const g=x.createRadialGradient(16,16,0,16,16,16);g.addColorStop(0,`rgba(${m},1)`);g.addColorStop(.22,`rgba(${m},.6)`);g.addColorStop(.55,`rgba(${m},.15)`);g.addColorStop(1,`rgba(${m},0)`);x.fillStyle=g;x.fillRect(0,0,32,32);return SPR[col]=c;}
 const rgbOf=hex=>{const n=parseInt(hex.replace('#',''),16);return `rgb(${n>>16&255},${n>>8&255},${n&255})`;};
@@ -128,7 +128,7 @@ svg.addEventListener('keydown',e=>{const d=e.key==='ArrowRight'||e.key==='ArrowD
 function countUp(){if(reduce)return;panel.querySelectorAll('.pcount').forEach(n=>{const to=+n.textContent;if(!to)return;const t0=performance.now();(function f(){const u=Math.min(1,(performance.now()-t0)/800);n.textContent=String(Math.round(to*(1-Math.pow(1-u,3))));if(u<1)requestAnimationFrame(f);})();});}
 function fmtDate(s){const d=new Date(s+'T12:00:00Z');return d.toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric',timeZone:'UTC'});}
 function el(t,cls,txt){const e=document.createElement(t);if(cls)e.className=cls;if(txt!=null)e.textContent=txt;return e;}
-function select(key,fly=true){st.sel=key;st.picked=true;renderPanel();if(typeof syncQ==='function')syncQ();recolor();try{history.replaceState(null,'','#'+key.replace(':','.'));}catch(e){}}
+function select(key,fly=true){st.sel=key;st.picked=true;renderPanel();if(typeof syncQ==='function')syncQ();recolor();}
 function renderPanel(){
   const d=resolve(st.sel);panel.innerHTML='';
   const crumb=el('div','crumb');
@@ -341,7 +341,7 @@ q.addEventListener('blur',()=>{closeList();syncQ();});
 function syncQ(){if(!st.picked){q.value='';return;}let n=null;for(const [nm,key] of names)if(key===st.sel){n=nm;break;}q.value=n||resolve(st.sel).name||'';}
 
 try{const t=localStorage.getItem('ecg-tab');if(t==='rules'||t==='limits'||t==='products')st.tab=t;}catch(e){}
-const h=location.hash.slice(1).replace('.',':');if(h&&(J[h]||LZ[h]||byKey.has(h)))st.sel=h;
+
 
 setMode(st.mode);renderTimeline();
 
